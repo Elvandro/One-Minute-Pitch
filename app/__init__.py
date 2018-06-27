@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_bootstrap import Bootstap
+from flask_bootstrap import Bootstrap
 from config import config_options
 
-bootstrap = Bootstap()
+bootstrap = Bootstrap()
 
 def create_app(config_name):
 
