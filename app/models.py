@@ -1,27 +1,41 @@
 from . import db
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(360))
-    email = db.Column(db.String(360))
-    password = db.Column(db.String(660))
+    username = db.Column(db.String(255))
+    email = db.Column(db.String(255))
+    password = db.Column(db.String(255))
     # Defining the One to many relationship between a user and a pitch
     pitch = db.relationship('Pitch', backref="user", lazy='dynamic')
 
     # Defining the One to many relationship between a user and a comment
-    comment = db.relationship('Comment' backref='user' lazy='dynamic')
+    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    pass_secure = db.Column(db.String(255))
 
-    def __repr__(self):
-        return f'User {self.username}'
+        @property
+        def password(self):
+            raise AttributeError('You cannot read the password attribute')
+
+        @password.setter
+        def password(self, password):
+            self.pass_secure = generate_password_hash(password)
+
+        def verify_password(self, password):
+            return check_password_hash(self.pass_secure,password)
+
+        def __repr__(self):
+            return f'User {self.username}'
 
 
 class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(360))
+    name = db.Column(db.String(255))
     # Defining a one to many relationship between a category and a pitch
     pitch = db.relationship('Pitch', backref='category', lazy='dynamic')
 
@@ -35,13 +49,13 @@ class Pitch(db.Model):
     category = db.Column(db.String)
     pitch = db.Column(db.String)
     # Defining the foreign key from the relationship between a user and a pitch
-    user_id = db.Column(db.Integer, db.ForeignKey(users.id))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     # Defining the foreign key from the relationship between a category and a pitch
-    category_id = db.Column(db.Integer, db.ForeignKey(categories.id))
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
 
     # Defining a one to many relationship between a pitch and a comment
-    comment = db.relationship('Comment', backref="pitch", cascade="all, delete=orphan" , lazy="dynamic")
+    comment = db.relationship('Comment', backref="pitch", cascade="all, delete-orphan" , lazy="dynamic")
 
     def __repr__(self):
         return f'Pitch {self.pitch}'
@@ -50,14 +64,14 @@ class Comment(db.Model):
     __tablename__ = 'comments'
 
     id =  db.Column(db.Integer, primary_key = True)
-    author = db.Column(db.String(360))
+    author = db.Column(db.String(255))
     pitch = db.Column(db.String)
     comment = db.Column(db.String)
     # Defining the foreign key from the relationship between a pitch and a comment
-    pitch_id = db.Column(db.Integer, db.ForeignKey(pitches.id))
+    pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
 
     # Defining the foreign key from the relationship between a user and a comment
-    user_id = db.Column(db.Integer, db.ForeignKey(users.id))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __repr__(self):
         return f'Comment {self.comment}'
