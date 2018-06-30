@@ -18,7 +18,7 @@ class User(UserMixin,db.Model):
     pitch = db.relationship('Pitch', backref="user", lazy='dynamic')
 
     # Defining the One to many relationship between a user and a comment
-    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    comment = db.relationship('Comment', backref='main_user', lazy='dynamic')
     pass_secure = db.Column(db.String(255))
 
     @property
@@ -42,7 +42,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255))
     # Defining a one to many relationship between a category and a pitch
-    pitch = db.relationship('Pitch', backref='category', lazy='dynamic')
+    pitch = db.relationship('Pitch', backref='parent_category', lazy='dynamic')
 
     def __repr__(self):
         return f'Category {self.name}'
@@ -60,7 +60,7 @@ class Pitch(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
 
     # Defining a one to many relationship between a pitch and a comment
-    comment = db.relationship('Comment', backref="pitch", cascade="all, delete-orphan" , lazy="dynamic")
+    comment = db.relationship('Comment', backref="main_pitch", cascade="all, delete-orphan" , lazy="dynamic")
 
     def __repr__(self):
         return f'Pitch {self.pitch}'
