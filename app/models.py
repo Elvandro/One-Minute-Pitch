@@ -7,6 +7,8 @@ class User(db.Model):
     username = db.Column(db.String(360))
     email = db.Column(db.String(360))
     password = db.Column(db.String(660))
+    # Defining the One to many relationship between a user and a pitch
+    pitch = db.relationship('Pitch', backref="user", lazy='dynamic')
 
     def __repr__(self):
         return f'User {self.username}'
@@ -27,6 +29,8 @@ class Pitch(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     category = db.Column(db.String)
     pitch = db.Column(db.String)
+    # Defining the foreign key from the relationship between a user and a pitch
+    user_id = db.Column(db.Integer, db.ForeignKey(users.id))
 
     def __repr__(self):
         return f'Pitch {self.pitch}'
