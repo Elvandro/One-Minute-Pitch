@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macro %}
+
 {% block navbar %}
   {% include 'navbar.html'%}
 {% endblock %}
 {% block content %}
 <h2 class="text-center">General pitches</h2>
-{% endblock%}
+<div class="container-fluid">
+  {{macro.displayPitch(general)}}
+</div>
+{% endblock %}

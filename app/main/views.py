@@ -64,3 +64,15 @@ def entertainment():
     Function that returns the entertainment category page
     '''
     return render_template('entertainment.html')
+
+@main.route('/write_pitch',methods = ["GET", "POST"])
+def write_pitch():
+    if request.method == 'POST':
+        write_pitch = request.form
+        return render_template("macros.html", write_pitch = write_pitch)
+
+@main.route('/write_comment', methods = ["GET", "POST"])
+def write_comment():
+    if request.method == 'POST':
+        write_comment = request.form
+        return render_template("macros.html", write_comment = write_comment)

@@ -1,0 +1,17 @@
+{% import 'bootstrap/wtf.html' as wtf%}
+{% macro displayPitch(pitch_list) %} {% for pitch in pitch_list %}
+{% block content %}
+<div class="col-md-8">
+  <div class="card m-6">
+    <div class="card-header">
+      <h4 class="card-title"></h4>
+    </div>
+    <div class="card-body">
+      <p class="card-text"></p>
+    </div>
+    <div class="card-footer">
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% endfor %} {% endmacro %}
