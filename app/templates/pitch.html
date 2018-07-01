@@ -1,1 +1,20 @@
-<button type="button" class="btn btn-info">Info</button>
+{% extends 'base.html' %}
+{% block navbar %}
+  {% include 'navbar.html'%}
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <h1 class="text-center">Click on one of the Categories below if you wish to post a pitch</h1>
+  <p class="lead text-center">
+    <p class="text-center">
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.general') }}">General</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.career') }}">Career</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.business') }}">Business</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.technology') }}">Technology</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.science') }}">Science</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.sports') }}">Sports</a>
+      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.entertainment') }}">Entertainment</a>
+    </p>
+  </p>
+</div>
+{% endblock%}

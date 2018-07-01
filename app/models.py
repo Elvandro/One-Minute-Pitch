@@ -51,8 +51,8 @@ class Pitch(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer, primary_key = True)
-    category = db.Column(db.String)
-    pitch = db.Column(db.String)
+    pitch_title = db.Column(db.String(255))
+    pitch_content = db.Column(db.String(255))
     # Defining the foreign key from the relationship between a user and a pitch
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -60,7 +60,7 @@ class Pitch(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
 
     # Defining a one to many relationship between a pitch and a comment
-    comment = db.relationship('Comment', backref="main_pitch", cascade="all, delete-orphan" , lazy="dynamic")
+    comments = db.relationship('Comment', backref="main_pitch", cascade="all, delete-orphan" , lazy="dynamic")
 
     def __repr__(self):
         return f'Pitch {self.pitch}'
@@ -70,8 +70,7 @@ class Comment(db.Model):
 
     id =  db.Column(db.Integer, primary_key = True)
     author = db.Column(db.String(255))
-    pitch = db.Column(db.String)
-    comment = db.Column(db.String)
+    comment = db.Column(db.String(255))
     # Defining the foreign key from the relationship between a pitch and a comment
     pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
 
