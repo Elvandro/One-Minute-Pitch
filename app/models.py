@@ -51,8 +51,8 @@ class Pitch(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer, primary_key = True)
-    pitch_title = db.Column(db.String(255))
-    pitch_content = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    body = db.Column(db.String)
     # Defining the foreign key from the relationship between a user and a pitch
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -70,7 +70,7 @@ class Comment(db.Model):
 
     id =  db.Column(db.Integer, primary_key = True)
     author = db.Column(db.String(255))
-    comment = db.Column(db.String(255))
+    comment = db.Column(db.String)
     # Defining the foreign key from the relationship between a pitch and a comment
     pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
 
