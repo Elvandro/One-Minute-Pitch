@@ -63,7 +63,7 @@ class Pitch(db.Model):
     comments = db.relationship('Comment', backref="main_pitch", cascade="all, delete-orphan" , lazy="dynamic")
 
     def __repr__(self):
-        return f'Pitch {self.pitch}'
+        return f'Pitch {self.title}'
 
 class Comment(db.Model):
     __tablename__ = 'comments'

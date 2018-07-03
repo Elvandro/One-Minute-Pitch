@@ -1,18 +1,60 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macro %}
 {% block navbar %}
   {% include 'navbar.html'%}
 {% endblock %}
 {% block content %}
+
 <div class="container-fluid">
-  <h1 class="text-center">Click on one of the Categories below if you wish to post a pitch</h1>
-  <p class="lead text-center">
-    <p class="text-center">
-      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.general') }}">General</a>
-      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.career') }}">Career</a>
-      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.business') }}">Business</a>
-      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.technology') }}">Technology</a>
-      <a class="btn btn-info btn-lg" role="button" href="{{ url_for('main.science') }}">Science</a>
-    </p>
-  </p>
+  <h1 class="text-center">Write a pitch in the form below.</h1>
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.body.label(class="form-control-label") }}
+                {% if form.body.errors %}
+                    {{ form.body(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.body(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+
 </div>
-{% endblock%}
+
+</div>
+
+
+<!-- Content block -->
+<div class="container-fluid mt-3">
+  <div class="row">
+      {{macro.displayPitchList(pitch_list)}}
+
+  </div>
+</div>
+
+{% endblock content %}

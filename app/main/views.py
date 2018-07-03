@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, url_for, flash, redirect, request, abort
 from . import main
-from flask_login import login_required
+from flask_login import login_required, current_user
 from .forms import PitchForm, CommentForm
 from ..models import User, Category, Pitch, Comment
 from ..import db
@@ -12,78 +12,30 @@ def index():
     """
     return render_template('index.html')
 
-@main.route('/pitch')
-def pitch():
-    '''
-    Function that returns the pitch page
-    '''
-    return render_template('pitch.html')
-
-@main.route('/general')
-def general():
-    '''
-    Function that returns the general category page
-    '''
-    form = PitchForm()
-    return render_template('general.html', pitch_form=form)
-
-@main.route('/career')
-def career():
-    '''
-    Function that returns the career category page
-    '''
-    form = PitchForm()
-    return render_template('career.html', pitch_form=form)
-
-@main.route('/business')
-def business():
-    '''
-    Function that returns the business category page
-    '''
-    form = PitchForm()
-    return render_template('business.html', pitch_form=form)
-
-@main.route('/technology')
-def technology():
-    '''
-    Function that returns the technology category page
-    '''
-    form = PitchForm()
-    return render_template('technology.html', pitch_form=form)
-
-@main.route('/science')
-def science():
-    '''
-    Function that returns the science category page
-    '''
-    form = PitchForm()
-    return render_template('science.html', pitch_form=form)
-
-
-@main.route('/write_pitch',methods = ["GET", "POST"])
+@main.route('/pitch/new', methods=["GET", "POST"])
 @login_required
-def write_pitch():
+def new_pitch():
     form = PitchForm()
     if form.validate_on_submit():
-        title = form.title.data
-        body = form.body.data
-
-        new_pitch = Pitch(title=title,body=body)
-        new_pitch.save_pitch()
-        return redirect(url_for('main.pitch'))
+        pitch = Pitch(title = form.title.data, body = form.body.data)
+        db.session.add(pitch)
+        db.session.commit()
+        flash('Your pitch has been created succesfully')
+        return redirect(url_for('main.new_pitch'))
     title = "Create a Pitch"
-    return render_template('main/pitch.html', title=title, pitch_form=form)
+    pitches = Pitch.query.all()
 
-@main.route('/write_comment', methods = ["GET", "POST"])
+    return render_template('pitch.html', title=title, form=form, pitch_list=pitches)
+
+@main.route('/comment/new', methods = ["GET", "POST"])
 @login_required
-def write_comment():
-    comment_form = CommentForm()
-    pitch = Pitch.query.filter_by(id=id).first()
+def new_comment():
+    form = CommentForm()
     if form.validate_on_submit():
-        comment = form.comment.data
-
-        new_comment = Comment(pitch_id=pithc_id, comment=comment)
-        new_comment.save_comment()
-        return redirect(url_for('main.pitch'))
-
-    return render_template('main/pitch.html', comment_form=comment_form)
+        comment = Comment(comment=form.comment.data)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been posted succesfully')
+        return redirect(url_for('main.new_comment'))
+    comments = Comment.query.all()
+    return render_template('form.html', form=form, comment_list=comments)
