@@ -2,8 +2,9 @@
 
 {% block content %}
 <div class="container-fluid">
-  <h1>Welcome to One minute pitch website</h1>
-  <p>Sign up to make a pitch. Click <a href="{{ url_for('auth.register') }}">here.</a></p>
+  <h1 class="text-center">Welcome to One minute pitch website</h1>
+  <p>Click <a href="{{ url_for('auth.register') }}">here</a> to sign up to make a pitch.  </p>
   <p>If already signed up click <a href="{{ url_for('auth.login') }}">here</a> to log in.</p>
+  <p>Click<a href="{{ url_for('main.new_pitch') }}"> here </a>to create a pitch or view existing Pitches.</p>
 </div>
 {% endblock %}
